@@ -1,0 +1,42 @@
+.hobbies__container {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.hobbies__row {
+  display: flex;
+  gap: 10px;
+}
+
+.hobbies__hobby {
+  width: 60%;
+}
+
+.hobbies__duration {
+  width: 30%;
+}
+
+.hobbies__button {
+  width: 10%;
+  margin-top: 6px;
+  align-self: baseline;
+}
+
+.hobbies__list {
+  list-style: none;
+  margin: 10px 0;
+  padding-left: 0;
+}
+
+
+.hobbies__item {
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+  align-items: center;
+}
+
+.item__value {
+  flex: 1;
+}

@@ -1,0 +1,12 @@
+.container {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  margin: 40px auto;
+  box-sizing: border-box;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
