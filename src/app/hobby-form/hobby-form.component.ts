@@ -21,7 +21,7 @@ export class HobbyFormComponent {
     this.hobbies.push(hobbyForm);
   }
 
-  removeHobby(i: number) {
-    this.hobbies.removeAt(i)
+  removeHobby(index: number) {
+    this.hobbies.removeAt(index)
   }
 }
