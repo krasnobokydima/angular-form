@@ -41,10 +41,15 @@
       <input matInput required formControlName="email" />
     </mat-form-field>
 
-    <app-hobby-form
-      [form]="form"
-    ></app-hobby-form>
+    <app-hobby-form [form]="form"></app-hobby-form>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="this.form.status === 'INVALID'">Submit</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="this.form.status === 'INVALID'"
+    >
+      Submit
+    </button>
   </form>
 </div>

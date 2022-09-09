@@ -1,7 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Hobby } from '../interfaces';
-
 @Component({
   selector: 'app-hobby-form',
   templateUrl: './hobby-form.component.html',
@@ -24,10 +22,6 @@ export class HobbyFormComponent {
   }
 
   removeHobby(i: number) {
-    // const confirm = window.confirm('Are you shore for deleting?');
-
-    // if (confirm) {
     this.hobbies.removeAt(i)
-    // }
   }
 }
