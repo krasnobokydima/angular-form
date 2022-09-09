@@ -1,54 +1,52 @@
 <div class="hobbies__container">
-  <h3>Hobbies</h3>
-  <div [formGroup]="form">
-    <div class="hobbies__row">
-      <mat-form-field appearance="fill" class="hobbies__hobby">
-        <mat-label>Write your hobby</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="hobby"
-          formControlName="hobby"
-        />
-      </mat-form-field>
+  <div class="hobbies__title">
+    <h3>Hobbies</h3>
 
-      <mat-form-field appearance="fill" class="hobbies__duration">
-        <mat-label>Duration (mounts)</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="duration"
-          formControlName="duration"
-        />
-      </mat-form-field>
-      <button
-        mat-mini-fab
-        color="primary"
-        aria-label="Example icon button with a menu icon"
-        (click)="addNewHobby()"
-        type="button"
-        class="hobbies__button"
-        [disabled]="
-          form.get('duration')?.invalid ||
-          !form.get('duration')?.touched ||
-          form.get('hobby')?.invalid ||
-          !form.get('hobby')?.touched
-        "
-      >
-        <mat-icon>add</mat-icon>
-      </button>
+    <button
+      mat-mini-fab
+      color="primary"
+      (click)="addNewHobby()"
+      type="button"
+      class="hobbies__button"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div [formGroup]="form">
+    <div formArrayName="hobbies">
+      <div *ngFor="let hobbyForm of hobbies.controls; let i = index">
+        <div class="hobbies__row" [formGroupName]="i">
+          <mat-form-field appearance="fill" class="hobbies__hobby">
+            <mat-label>Write your hobby</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="hobby"
+              formControlName="hobby"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="hobbies__duration">
+            <mat-label>Duration (mounts)</mat-label>
+            <input
+              matInput
+              type="number"
+              placeholder="duration"
+              formControlName="duration"
+            />
+          </mat-form-field>
+
+          <button
+            mat-mini-fab
+            color="warn"
+            type="button"
+            class="hobbies__button"
+            (click)="removeHobby(i)"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-  <ul class="hobbies__list" *ngIf="hobbies.length > 0">
-    <li class="hobbies__item" *ngFor="let hobby of hobbies; let index = index">
-      <h3 class="item__number">
-        <strong> {{ index + 1 }}) </strong>
-      </h3>
-      <h3 class="item__value">{{ hobby.hobby }}</h3>
-      <p class="item__duration">
-        {{ hobby.duration }}
-        {{hobby.duration === 1 ? 'mount' : 'mounts'}};
-      </p>
-    </li>
-  </ul>
 </div>

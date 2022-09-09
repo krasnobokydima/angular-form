@@ -1,16 +1,15 @@
 <div class="container">
   <form method="post" class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <!-- name -->
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput required formControlName="firstName" />
     </mat-form-field>
-    <!-- Last name -->
+
     <mat-form-field appearance="fill">
       <mat-label>Last name</mat-label>
       <input matInput required formControlName="lastName" />
     </mat-form-field>
-    <!-- Date of birth -->
+
     <mat-form-field appearance="fill">
       <mat-label>Choose a date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
@@ -18,7 +17,7 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <!-- FE technology ([angular, react, vue]) -->
+
     <mat-form-field appearance="fill">
       <mat-label>FE technology</mat-label>
       <mat-select formControlName="framework" (valueChange)="onChange($event)">
@@ -27,18 +26,16 @@
         <mat-option value="Vue">Vue</mat-option>
       </mat-select>
     </mat-form-field>
-    <!-- FE technology version -->
+
     <mat-form-field appearance="fill">
       <mat-label>FE technology version</mat-label>
       <mat-select formControlName="frameworkVersion">
-        <mat-option
-          *ngFor="let version of versions"
-          [value]="version"
-          >{{ version }}</mat-option
-        >
+        <mat-option *ngFor="let version of versions" [value]="version">
+          {{ version }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
-    <!-- email -->
+
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input matInput required formControlName="email" />
@@ -46,12 +43,8 @@
 
     <app-hobby-form
       [form]="form"
-      (onAddHobby)="addHobby()"
-      [hobbies]="hobbies"
     ></app-hobby-form>
 
-    <button mat-raised-button color="primary" type="submit">Submit</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="this.form.status === 'INVALID'">Submit</button>
   </form>
 </div>
-
-<!-- <mat-error *ngIf="fontSizeControl.invalid">Min size: 10px</mat-error> -->

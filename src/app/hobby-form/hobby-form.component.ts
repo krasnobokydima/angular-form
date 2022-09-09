@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormArray, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Hobby } from '../interfaces';
 
 @Component({
@@ -7,16 +7,27 @@ import { Hobby } from '../interfaces';
   templateUrl: './hobby-form.component.html',
   styleUrls: ['./hobby-form.component.css'],
 })
-export class HobbyFormComponent implements OnInit {
+export class HobbyFormComponent {
   @Input() form!: FormGroup;
-  @Output() onAddHobby = new EventEmitter<string>();
-  @Input() hobbies!: Hobby[];
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  hobbiesArray!: FormGroup[];
+  get hobbies() {
+    return this.form.controls['hobbies'] as FormArray;
+  }
 
   addNewHobby() {
-    this.onAddHobby.emit();
+    const hobbyForm: FormGroup = new FormGroup({
+      hobby: new FormControl('', Validators.required),
+      duration: new FormControl('', [Validators.min(1), Validators.required]),
+    })
+
+    this.hobbies.push(hobbyForm);
+  }
+
+  removeHobby(i: number) {
+    // const confirm = window.confirm('Are you shore for deleting?');
+
+    // if (confirm) {
+    this.hobbies.removeAt(i)
+    // }
   }
 }

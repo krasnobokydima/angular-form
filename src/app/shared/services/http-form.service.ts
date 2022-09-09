@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http'
+// import {HttpClient} from '@angular/common/http'
 @Injectable({
   providedIn: 'root'
 })
 export class HttpFormService {
-  constructor(private http: HttpClient) { }
+  // constructor(private http: HttpClient) { }
 
-  post(data: FormData): void {
-    console.log(data)
-    console.log('12')
-  }
+  post(data: FormData): void { console.log(data) }
 }
