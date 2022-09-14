@@ -15,7 +15,7 @@
   <ng-container *ngIf="hobbiesForms.length > 0; else empty">
     <ng-container *ngFor="let hobbyForm of hobbiesForms; let i = index">
       <div class="hobbies__list">
-        <app-custom-form [hobbyForm]="hobbyForm"></app-custom-form>
+        <app-custom-form [form]="hobbyForm"></app-custom-form>
         <button
           mat-mini-fab
           color="warn"

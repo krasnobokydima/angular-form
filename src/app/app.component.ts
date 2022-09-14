@@ -5,7 +5,6 @@ import {
   Validators,
   FormBuilder,
   FormArray,
-  FormGroup,
   FormControl,
 } from '@angular/forms';
 import { Versions, Frameworks } from './interfaces';

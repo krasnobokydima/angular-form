@@ -29,13 +29,11 @@ import { hobbyFormConfig } from 'src/app/store/variables';
   ],
 })
 export class CustomFormComponent implements ControlValueAccessor, OnDestroy {
-  @Input('hobbyForm') form!: FormGroup;
+  @Input() form!: FormGroup;
   config = hobbyFormConfig;
   onTouched: Function = () => {};
 
   subs$: Subscription[] = [];
-
-  constructor(private fb: FormBuilder) {}
 
   ngOnDestroy(): void {
     for (let sub of this.subs$) {
@@ -63,7 +61,7 @@ export class CustomFormComponent implements ControlValueAccessor, OnDestroy {
     }
   }
 
-  validate(control: AbstractControl) {
+  validate() {
     if (this.form.valid) {
       return null;
     }

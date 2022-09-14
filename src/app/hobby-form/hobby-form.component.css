@@ -4,18 +4,6 @@
 }
 
 
-.hobbies__row {
-  display: flex;
-  gap: 10px;
-}
-
-.hobbies__hobby {
-  width: 60%;
-}
-
-.hobbies__duration {
-  width: 30%;
-}
 
 .hobbies__button {
   width: 10%;
@@ -37,10 +25,6 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.item__value {
-  flex: 1;
 }
 
 .mat-mini-fab {
