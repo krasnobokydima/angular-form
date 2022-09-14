@@ -15,10 +15,11 @@ import {MatIconModule} from '@angular/material/icon';
 
 import { DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { HobbyFormComponent } from './hobby-form/hobby-form.component'
+import { HobbyFormComponent } from './hobby-form/hobby-form.component';
+import { CustomFormComponent } from './hobby-form/custom-form/custom-form.component';
 
 @NgModule({
-  declarations: [AppComponent, HobbyFormComponent],
+  declarations: [AppComponent, HobbyFormComponent, CustomFormComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

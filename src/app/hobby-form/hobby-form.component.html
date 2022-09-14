@@ -5,48 +5,32 @@
     <button
       mat-mini-fab
       color="primary"
-      (click)="addNewHobby()"
       type="button"
       class="hobbies__button"
+      (click)="addHobbyEvent.emit()"
     >
       <mat-icon>add</mat-icon>
     </button>
   </div>
-  <div [formGroup]="form">
-    <div formArrayName="hobbies">
-      <div *ngFor="let hobbyForm of hobbies.controls; let i = index">
-        <div class="hobbies__row" [formGroupName]="i">
-          <mat-form-field appearance="fill" class="hobbies__hobby">
-            <mat-label>Write your hobby</mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="hobby"
-              formControlName="hobby"
-            />
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="hobbies__duration">
-            <mat-label>Duration (mounts)</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="duration"
-              formControlName="duration"
-            />
-          </mat-form-field>
-
-          <button
-            mat-mini-fab
-            color="warn"
-            type="button"
-            class="hobbies__button"
-            (click)="removeHobby(i)"
-          >
-            <mat-icon>remove</mat-icon>
-          </button>
-        </div>
+  <ng-container *ngIf="hobbiesForms.length > 0; else empty">
+    <ng-container *ngFor="let hobbyForm of hobbiesForms; let i = index">
+      <div class="hobbies__list">
+        <app-custom-form [hobbyForm]="hobbyForm"></app-custom-form>
+        <button
+          mat-mini-fab
+          color="warn"
+          type="button"
+          class="hobbies__button"
+          (click)="removeHobbyEvent.emit(i)"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
       </div>
-    </div>
-  </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-template #empty>
+    <h2>No hobbies :(</h2>
+    <p>You can add hobby if you click the button</p>
+  </ng-template>
 </div>

@@ -2,12 +2,12 @@
   <form method="post" class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input matInput required formControlName="firstName" />
+      <input matInput formControlName="firstName" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Last name</mat-label>
-      <input matInput required formControlName="lastName" />
+      <input matInput formControlName="lastName" />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -20,10 +20,10 @@
 
     <mat-form-field appearance="fill">
       <mat-label>FE technology</mat-label>
-      <mat-select formControlName="framework" (valueChange)="onChange($event)">
-        <mat-option value="Angular">Angular</mat-option>
-        <mat-option value="React">React</mat-option>
-        <mat-option value="Vue">Vue</mat-option>
+      <mat-select formControlName="framework">
+        <mat-option *ngFor="let framework of frameworks" [value]="framework">
+          {{ framework }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -38,16 +38,20 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input matInput required formControlName="email" />
+      <input matInput formControlName="email" />
     </mat-form-field>
 
-    <app-hobby-form [form]="form"></app-hobby-form>
+    <app-hobby-form
+      [hobbies]="hobbies"
+      (addHobbyEvent)="addHobby()"
+      (removeHobbyEvent)="removeHobby($event)"
+    ></app-hobby-form>
 
     <button
       mat-raised-button
       color="primary"
       type="submit"
-      [disabled]="this.form.status === 'INVALID'"
+      [disabled]="!form.valid"
     >
       Submit
     </button>

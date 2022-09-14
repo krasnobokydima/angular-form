@@ -1,0 +1,15 @@
+<div [formGroup]="form" class="hobbies__list">
+  <mat-form-field
+    appearance="fill"
+    class="hobbies__item"
+    *ngFor="let conf of config"
+  >
+    <mat-label>{{ conf.label }}</mat-label>
+    <input
+      matInput
+      [type]="conf.type"
+      [placeholder]="conf.placeholder"
+      [formControlName]="conf.name"
+    />
+  </mat-form-field>
+</div>

@@ -27,14 +27,9 @@
   list-style: none;
   margin: 10px 0;
   padding-left: 0;
-}
 
-
-.hobbies__item {
   display: flex;
-  justify-content: start;
-  gap: 10px;
-  align-items: center;
+
 }
 
 .hobbies__title {
@@ -46,4 +41,8 @@
 
 .item__value {
   flex: 1;
+}
+
+.mat-mini-fab {
+  transform: scale(0.7);
 }

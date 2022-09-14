@@ -1,28 +1,50 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-import { Validators, FormBuilder } from '@angular/forms';
-import { Versions, Libraries } from './interfaces';
+import {
+  Validators,
+  FormBuilder,
+  FormArray,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
+import { Versions, Frameworks } from './interfaces';
 import { HttpFormService } from './shared/services/http-form.service';
-import { libVersions } from './store/variables';
+import { libVersions, frameworks } from './store/variables';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit, OnDestroy {
   form = this.fb.group({
     firstName: [null, Validators.required],
     lastName: [null, [Validators.required]],
     dateOfBirth: [null, Validators.required],
     framework: [null, Validators.required],
-    frameworkVersion: [{value: null, disabled: true}, Validators.required],
+    frameworkVersion: [{ value: null, disabled: true }, Validators.required],
     email: [null, [Validators.email, Validators.required]],
     hobbies: this.fb.array([]),
   });
 
+  frameworks: Frameworks = frameworks;
   versions: Versions = [];
+  form$!: Subscription;
+
+  ngAfterViewInit() {
+    const framework = this.form.get('framework') as FormControl;
+
+    this.form$ = framework.valueChanges.subscribe((value: string) => {
+      this.versions = libVersions[value.toLowerCase()];
+      this.form.get('frameworkVersion')?.enable();
+    });
+  }
+
+  ngOnDestroy() {
+    this.form$.unsubscribe();
+  }
 
   constructor(
     private http: HttpFormService,
@@ -34,15 +56,27 @@ export class AppComponent {
     const newForm = JSON.parse(JSON.stringify(this.form.value));
 
     newForm.dateOfBirth = this.pipe.transform(
-      newForm.dateOfBirth,
+      this.form.value.dateOfBirth,
       'dd-MM-yyyy'
     );
 
     this.http.post(newForm);
   }
 
-  onChange($event: Libraries) {
-    this.versions = libVersions[$event.toLowerCase()];
-    this.form.get('frameworkVersion')?.enable();
+  get hobbies() {
+    return this.form.controls['hobbies'] as FormArray;
+  }
+
+  addHobby() {
+    this.hobbies.push(
+      this.fb.group({
+        hobby: [null, Validators.required],
+        duration: [null, [Validators.min(1), Validators.required]],
+      })
+    );
+  }
+
+  removeHobby(i: number) {
+    this.hobbies.removeAt(i);
   }
 }
