@@ -6,10 +6,11 @@ import {
   FormBuilder,
   FormArray,
   FormControl,
+  FormGroup,
 } from '@angular/forms';
 import { Versions, Frameworks } from './interfaces';
 import { HttpFormService } from './shared/services/http-form.service';
-import { libVersions, frameworks } from './store/variables';
+import { libVersions, frameworks, hobbyFormConfig } from './store/variables';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,6 +19,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
+  config = hobbyFormConfig;
   form = this.fb.group({
     firstName: [null, Validators.required],
     lastName: [null, [Validators.required]],
@@ -64,6 +66,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   get hobbies() {
     return this.form.controls['hobbies'] as FormArray;
+  }
+
+  get hobbiesForms() {
+    return this.hobbies.controls as FormGroup[];
   }
 
   addHobby() {

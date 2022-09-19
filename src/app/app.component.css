@@ -10,3 +10,48 @@
   display: flex;
   flex-direction: column;
 }
+
+.hobbies__item {
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+  align-items: center;
+}
+
+.hobbies__list {
+  display: flex;
+  gap: 10px;
+}
+
+.hobbies__container {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.hobbies__button {
+  width: 10%;
+  margin-top: 6px;
+  align-self: baseline;
+}
+
+.hobbies__list {
+  list-style: none;
+  margin: 10px 0;
+  padding-left: 0;
+
+  display: flex;
+
+}
+
+.hobbies__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mat-mini-fab {
+  transform: scale(0.7);
+}

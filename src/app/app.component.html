@@ -40,18 +40,71 @@
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" />
     </mat-form-field>
-
+    <!--
     <app-hobby-form
       [hobbies]="hobbies"
       (addHobbyEvent)="addHobby()"
       (removeHobbyEvent)="removeHobby($event)"
-    ></app-hobby-form>
+    ></app-hobby-form> -->
+
+    <div class="hobbies__container">
+      <div class="hobbies__title">
+        <h3>Hobbies</h3>
+
+        <button
+          mat-mini-fab
+          color="primary"
+          type="button"
+          class="hobbies__button"
+          (click)="addHobby()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <ng-container *ngIf="hobbiesForms.length > 0; else empty">
+        <ng-container *ngFor="let hobbyForm of hobbiesForms; let i = index">
+          <div class="hobbies__list">
+            <div [formGroup]="hobbyForm" class="hobbies__list">
+              <mat-form-field
+                appearance="fill"
+                class="hobbies__item"
+                *ngFor="let conf of config"
+              >
+                <mat-label>{{ conf.label }}</mat-label>
+                <input
+                  matInput
+                  [type]="conf.type"
+                  [placeholder]="conf.placeholder"
+                  [formControlName]="conf.name"
+                />
+              </mat-form-field>
+            </div>
+            <button
+              mat-mini-fab
+              color="warn"
+              type="button"
+              class="hobbies__button"
+              (click)="removeHobby(i)"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #empty>
+        <h2>No hobbies :(</h2>
+        <p>You can add hobby if you click the button</p>
+      </ng-template>
+    </div>
 
     <button
       mat-raised-button
       color="primary"
       type="submit"
       [disabled]="!form.valid"
-    >Submit</button>
+    >
+      Submit
+    </button>
   </form>
 </div>
