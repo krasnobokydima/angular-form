@@ -39,13 +39,8 @@
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" />
+      <mat-error *ngIf="email.invalid">{{errorMessage}}</mat-error>
     </mat-form-field>
-    <!--
-    <app-hobby-form
-      [hobbies]="hobbies"
-      (addHobbyEvent)="addHobby()"
-      (removeHobbyEvent)="removeHobby($event)"
-    ></app-hobby-form> -->
 
     <div class="hobbies__container">
       <div class="hobbies__title">
@@ -102,9 +97,7 @@
       mat-raised-button
       color="primary"
       type="submit"
-      [disabled]="!form.valid"
-    >
-      Submit
-    </button>
+    [disabled]="!form.valid"
+    >Submit</button>
   </form>
 </div>

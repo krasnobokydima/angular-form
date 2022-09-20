@@ -13,6 +13,10 @@ import { HttpFormService } from './shared/services/http-form.service';
 import { libVersions, frameworks, hobbyFormConfig } from './store/variables';
 import { Subscription } from 'rxjs';
 
+interface ValidatorsErrors {
+  email: string;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,19 +36,23 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   frameworks: Frameworks = frameworks;
   versions: Versions = [];
-  form$!: Subscription;
+  subs$: Subscription[] = [];
 
   ngAfterViewInit() {
     const framework = this.form.get('framework') as FormControl;
 
-    this.form$ = framework.valueChanges.subscribe((value: string) => {
-      this.versions = libVersions[value.toLowerCase()];
-      this.form.get('frameworkVersion')?.enable();
-    });
+    const checkFramework$ = framework.valueChanges.subscribe(
+      (value: string) => {
+        this.versions = libVersions[value.toLowerCase()];
+        this.form.get('frameworkVersion')?.enable();
+      }
+    );
+
+    this.subs$.push(checkFramework$);
   }
 
   ngOnDestroy() {
-    this.form$.unsubscribe();
+    this.subs$.forEach((sub) => sub.unsubscribe());
   }
 
   constructor(
@@ -61,7 +69,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       'dd-MM-yyyy'
     );
 
-    this.http.post(newForm);
+    console.log('errors', newForm);
   }
 
   get hobbies() {
@@ -70,6 +78,18 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   get hobbiesForms() {
     return this.hobbies.controls as FormGroup[];
+  }
+
+  get email() {
+    return this.form.get('email') as FormControl;
+  }
+
+  get errorMessage() {
+    return this.email.hasError('required')
+      ? 'You must enter a value'
+      : this.email.hasError('email')
+      ? 'Not a valid email'
+      : '';
   }
 
   addHobby() {
