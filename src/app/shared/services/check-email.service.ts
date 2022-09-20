@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { catchError, delay, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, catchError, delay, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckEmailService {
+  private emailContainer = ['test@test.test'];
+
   emailExists(email: string): Observable<boolean> {
     return of(email).pipe(
       delay(500),
       map((email) => {
-        return email === 'test@test.test';
+        if (this.emailContainer.includes(email)) {
+          return false
+        }
+
+        this.emailContainer.push(email)
+        return true
       })
     );
   }
