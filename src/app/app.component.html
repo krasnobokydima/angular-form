@@ -39,7 +39,13 @@
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" />
-      <mat-error *ngIf="email.invalid">{{errorMessage}}</mat-error>
+      <mat-error *ngIf="email.errors?.['required']">An email is required</mat-error>
+      <mat-error *ngIf="email.errors?.['email']">
+        Please enter a valid email address
+      </mat-error>
+      <mat-error *ngIf="email.errors?.['emailExists']">
+        This email address is already registered. Please use another one.
+      </mat-error>
     </mat-form-field>
 
     <div class="hobbies__container">
@@ -56,36 +62,39 @@
           <mat-icon>add</mat-icon>
         </button>
       </div>
-      <ng-container *ngIf="hobbiesForms.length > 0; else empty">
-        <ng-container *ngFor="let hobbyForm of hobbiesForms; let i = index">
-          <div class="hobbies__list">
-            <div [formGroup]="hobbyForm" class="hobbies__list">
-              <mat-form-field
-                appearance="fill"
-                class="hobbies__item"
-                *ngFor="let conf of config"
+      <ng-container formArrayName="hobbies">
+        <ng-container *ngIf="hobbiesForms.length > 0; else empty">
+          <ng-container *ngFor="let hobbyForm of hobbiesForms; let i = index">
+            <div class="hobbies__list">
+              <div [formGroup]="hobbyForm" class="hobbies__list">
+                <mat-form-field
+                  appearance="fill"
+                  class="hobbies__item"
+                  *ngFor="let conf of config"
+                >
+                  <mat-label>{{ conf.label }}</mat-label>
+                  <input
+                    matInput
+                    [type]="conf.type"
+                    [placeholder]="conf.placeholder"
+                    [formControlName]="conf.name"
+                  />
+                </mat-form-field>
+              </div>
+              <button
+                mat-mini-fab
+                color="warn"
+                type="button"
+                class="hobbies__button"
+                (click)="removeHobby(i)"
               >
-                <mat-label>{{ conf.label }}</mat-label>
-                <input
-                  matInput
-                  [type]="conf.type"
-                  [placeholder]="conf.placeholder"
-                  [formControlName]="conf.name"
-                />
-              </mat-form-field>
+                <mat-icon>remove</mat-icon>
+              </button>
             </div>
-            <button
-              mat-mini-fab
-              color="warn"
-              type="button"
-              class="hobbies__button"
-              (click)="removeHobby(i)"
-            >
-              <mat-icon>remove</mat-icon>
-            </button>
-          </div>
+          </ng-container>
         </ng-container>
       </ng-container>
+
 
       <ng-template #empty>
         <h2>No hobbies :(</h2>
@@ -97,7 +106,7 @@
       mat-raised-button
       color="primary"
       type="submit"
-    [disabled]="!form.valid"
+      [disabled]="!form.valid"
     >Submit</button>
   </form>
 </div>

@@ -10,13 +10,9 @@ import {
 } from '@angular/forms';
 import { Versions, Frameworks } from './interfaces';
 import { HttpFormService } from './shared/services/http-form.service';
-import { libVersions, frameworks, hobbyFormConfig } from './store/variables';
+import { libVersions, frameworks, hobbyFormConfig } from './store/constants';
 import { Subscription } from 'rxjs';
-
-interface ValidatorsErrors {
-  email: string;
-}
-
+import { CheckEmailService } from './shared/services/check-email.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,13 +26,37 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     dateOfBirth: [null, Validators.required],
     framework: [null, Validators.required],
     frameworkVersion: [{ value: null, disabled: true }, Validators.required],
-    email: [null, [Validators.email, Validators.required]],
+    email: [
+      null,
+      {
+        validators: [Validators.email, Validators.required],
+        asyncValidators: [this.checkService.uniqueEmailValidator()],
+      },
+    ],
     hobbies: this.fb.array([]),
   });
 
   frameworks: Frameworks = frameworks;
   versions: Versions = [];
   subs$: Subscription[] = [];
+
+  get hobbies() {
+    return this.form.controls['hobbies'] as FormArray;
+  }
+
+  get hobbiesForms() {
+    return this.hobbies.controls as FormGroup[];
+  }
+
+  get email() {
+    return this.form.get('email') as FormControl;
+  }
+
+  constructor(
+    private pipe: DatePipe,
+    private fb: FormBuilder,
+    private checkService: CheckEmailService
+  ) {}
 
   ngAfterViewInit() {
     const framework = this.form.get('framework') as FormControl;
@@ -55,12 +75,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.subs$.forEach((sub) => sub.unsubscribe());
   }
 
-  constructor(
-    private http: HttpFormService,
-    private pipe: DatePipe,
-    private fb: FormBuilder
-  ) {}
-
   onSubmit() {
     const newForm = JSON.parse(JSON.stringify(this.form.value));
 
@@ -68,28 +82,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       this.form.value.dateOfBirth,
       'dd-MM-yyyy'
     );
-
-    console.log('errors', newForm);
-  }
-
-  get hobbies() {
-    return this.form.controls['hobbies'] as FormArray;
-  }
-
-  get hobbiesForms() {
-    return this.hobbies.controls as FormGroup[];
-  }
-
-  get email() {
-    return this.form.get('email') as FormControl;
-  }
-
-  get errorMessage() {
-    return this.email.hasError('required')
-      ? 'You must enter a value'
-      : this.email.hasError('email')
-      ? 'Not a valid email'
-      : '';
   }
 
   addHobby() {
