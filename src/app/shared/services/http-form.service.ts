@@ -2,15 +2,11 @@ import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { IUser } from 'src/app/interfaces';
-import { CheckEmailService } from './check-email.service';
 @Injectable({
   providedIn: 'root',
 })
 export class HttpFormService {
-  constructor(
-    private pipe: DatePipe,
-    private checkService: CheckEmailService
-  ) {}
+  constructor(private pipe: DatePipe) {}
 
   register(user: Partial<IUser>): Observable<boolean> {
     return of(user).pipe(
@@ -22,10 +18,7 @@ export class HttpFormService {
           'dd-MM-yyyy'
         );
 
-        const { emailContainer } = this.checkService;
-        emailContainer.next([...emailContainer.value, newForm.email]);
         console.log(user);
-
         return true;
       })
     );

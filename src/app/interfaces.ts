@@ -1,5 +1,5 @@
 export type Libraries = 'Angular' | 'React' | 'Vue';
-export interface ILibVersions {
+export interface IFrameworksVersions {
   [key: string]: string[];
 }
 

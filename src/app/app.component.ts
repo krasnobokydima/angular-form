@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { Frameworks, IUser } from './interfaces';
 import { HttpFormService } from './shared/services/http-form.service';
-import { libVersions, frameworks } from './store/constants';
+import { frameworksVersions, frameworks } from './store/constants';
 import { Subscription } from 'rxjs';
 import { CheckEmailService } from './shared/services/check-email.service';
 @Component({
@@ -63,12 +63,12 @@ export class AppComponent implements OnInit, OnDestroy {
     private httpForm: HttpFormService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const framework = this.form.get('framework') as FormControl;
 
     const checkFramework$ = framework.valueChanges.subscribe(
-      (value: string) => {
-        this.versions = libVersions[value.toLowerCase()];
+      (framework: string) => {
+        this.versions = frameworksVersions[framework.toLowerCase()];
         this.form.get('frameworkVersion')?.enable();
       }
     );
@@ -76,19 +76,19 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subs$.push(checkFramework$);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subs$.forEach((sub) => sub.unsubscribe());
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.httpForm.register(this.form.value as Partial<IUser>).subscribe()
   }
 
-  addHobby() {
+  addHobby(): void {
     this.hobbies.push(this.hobbyForm);
   }
 
-  removeHobby(i: number) {
+  removeHobby(i: number): void {
     this.hobbies.removeAt(i);
   }
 }
