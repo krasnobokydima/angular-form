@@ -82,6 +82,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       this.form.value.dateOfBirth,
       'dd-MM-yyyy'
     );
+
+
+    const { emailContainer } = this.checkService
+    emailContainer.next([...emailContainer.value, newForm.email])
+
+    console.log(newForm)
   }
 
   addHobby() {

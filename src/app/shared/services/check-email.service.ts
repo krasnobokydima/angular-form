@@ -6,18 +6,16 @@ import { BehaviorSubject, catchError, delay, map, Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class CheckEmailService {
-  private emailContainer = ['test@test.test'];
+  public emailContainer = new BehaviorSubject<string[]>(['test@test.test'])
 
   emailExists(email: string): Observable<boolean> {
     return of(email).pipe(
       delay(500),
       map((email) => {
-        if (this.emailContainer.includes(email)) {
-          return false
-        }
-
-        this.emailContainer.push(email)
-        return true
+        console.log(this.emailContainer)
+        const { emailContainer } = this
+        if (emailContainer.value.includes('' + email)) return true;
+        return false;
       })
     );
   }
