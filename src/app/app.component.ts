@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 
 import {
   Validators,
@@ -8,9 +7,9 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { Versions, Frameworks } from './interfaces';
+import { Frameworks, IUser } from './interfaces';
 import { HttpFormService } from './shared/services/http-form.service';
-import { libVersions, frameworks, hobbyFormConfig } from './store/constants';
+import { libVersions, frameworks } from './store/constants';
 import { Subscription } from 'rxjs';
 import { CheckEmailService } from './shared/services/check-email.service';
 @Component({
@@ -18,8 +17,12 @@ import { CheckEmailService } from './shared/services/check-email.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements AfterViewInit, OnDestroy {
-  config = hobbyFormConfig;
+export class AppComponent implements OnInit, OnDestroy {
+  hobbyForm = this.fb.group({
+    hobby: [null, Validators.required],
+    duration: [null, [Validators.min(1), Validators.required]],
+  })
+
   form = this.fb.group({
     firstName: [null, Validators.required],
     lastName: [null, [Validators.required]],
@@ -33,11 +36,13 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         asyncValidators: [this.checkService.uniqueEmailValidator()],
       },
     ],
-    hobbies: this.fb.array([]),
+    hobbies: this.fb.array([
+      this.hobbyForm
+    ]),
   });
 
   frameworks: Frameworks = frameworks;
-  versions: Versions = [];
+  versions: string[] = [];
   subs$: Subscription[] = [];
 
   get hobbies() {
@@ -53,12 +58,12 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   constructor(
-    private pipe: DatePipe,
     private fb: FormBuilder,
-    private checkService: CheckEmailService
+    private checkService: CheckEmailService,
+    private httpForm: HttpFormService
   ) {}
 
-  ngAfterViewInit() {
+  ngOnInit() {
     const framework = this.form.get('framework') as FormControl;
 
     const checkFramework$ = framework.valueChanges.subscribe(
@@ -76,27 +81,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   onSubmit() {
-    const newForm = JSON.parse(JSON.stringify(this.form.value));
-
-    newForm.dateOfBirth = this.pipe.transform(
-      this.form.value.dateOfBirth,
-      'dd-MM-yyyy'
-    );
-
-
-    const { emailContainer } = this.checkService
-    emailContainer.next([...emailContainer.value, newForm.email])
-
-    console.log(newForm)
+    this.httpForm.register(this.form.value as Partial<IUser>).subscribe()
   }
 
   addHobby() {
-    this.hobbies.push(
-      this.fb.group({
-        hobby: [null, Validators.required],
-        duration: [null, [Validators.min(1), Validators.required]],
-      })
-    );
+    this.hobbies.push(this.hobbyForm);
   }
 
   removeHobby(i: number) {

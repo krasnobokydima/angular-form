@@ -39,7 +39,9 @@
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" />
-      <mat-error *ngIf="email.errors?.['required']">An email is required</mat-error>
+      <mat-error *ngIf="email.errors?.['required']"
+        >An email is required</mat-error
+      >
       <mat-error *ngIf="email.errors?.['email']">
         Please enter a valid email address
       </mat-error>
@@ -63,43 +65,47 @@
         </button>
       </div>
       <ng-container formArrayName="hobbies">
-        <ng-container *ngIf="hobbiesForms.length > 0; else empty">
-          <ng-container *ngFor="let hobbyForm of hobbiesForms; let i = index">
-            <div class="hobbies__list">
-              <div [formGroup]="hobbyForm" class="hobbies__list">
-                <mat-form-field
-                  appearance="fill"
-                  class="hobbies__item"
-                  *ngFor="let conf of config"
-                >
-                  <mat-label>{{ conf.label }}</mat-label>
-                  <input
-                    matInput
-                    [type]="conf.type"
-                    [placeholder]="conf.placeholder"
-                    [formControlName]="conf.name"
-                  />
-                </mat-form-field>
-              </div>
-              <button
-                mat-mini-fab
-                color="warn"
-                type="button"
-                class="hobbies__button"
-                (click)="removeHobby(i)"
+        <ng-container *ngFor="let hobbyForm of hobbiesForms; let i = index">
+          <div class="hobbies__list">
+            <div [formGroup]="hobbyForm" class="hobbies__list">
+              <mat-form-field
+                appearance="fill"
+                class="hobbies__item"
               >
-                <mat-icon>remove</mat-icon>
-              </button>
+                <mat-label>Hobby</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="hobby"
+                  formControlName="hobby"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="fill"
+                class="hobbies__item"
+              >
+                <mat-label>Duration</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  placeholder="duration"
+                  formControlName="duration"
+                />
+              </mat-form-field>
             </div>
-          </ng-container>
+            <button
+              *ngIf="i !== 0"
+              mat-mini-fab
+              color="warn"
+              type="button"
+              class="hobbies__button"
+              (click)="removeHobby(i)"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div>
         </ng-container>
       </ng-container>
-
-
-      <ng-template #empty>
-        <h2>No hobbies :(</h2>
-        <p>You can add hobby if you click the button</p>
-      </ng-template>
     </div>
 
     <button

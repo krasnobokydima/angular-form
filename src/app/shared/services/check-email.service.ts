@@ -12,7 +12,6 @@ export class CheckEmailService {
     return of(email).pipe(
       delay(500),
       map((email) => {
-        console.log(this.emailContainer)
         const { emailContainer } = this
         if (emailContainer.value.includes('' + email)) return true;
         return false;
